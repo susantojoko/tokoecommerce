@@ -78,7 +78,7 @@ class _descriptionsExpandedState extends State<descriptionsExpanded> {
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               Text(
-                'Perluas',
+                'Selengkapnya',
                 style: TextStyle(
                   fontSize: 18.0,
                 ),

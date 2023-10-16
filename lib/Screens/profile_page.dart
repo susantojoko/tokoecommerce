@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:tokoecommerce/Screens/Profil/edit_profile.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePage extends StatelessWidget {
+
+  Future<void> openWhatsApp(String phoneNumber) async {
+  final url = 'https://wa.me/$phoneNumber';  // Replace $phoneNumber with the target phone number
+
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+} 
   @override
   Widget build(BuildContext context) {
     final ScreenSize = MediaQuery.of(context).size;
@@ -29,7 +41,9 @@ class ProfilePage extends StatelessWidget {
         height: 400,
         child: Column(
           children: [
-            MenuProfile3(label: 'Pengaturan akun',icon: Icons.person,),
+            MenuProfile3(label: 'Pengaturan akun',icon: Icons.person, onTap: (() {
+             Navigator.push(context, MaterialPageRoute(builder: (context)=>EditProfile())); 
+            }),),
             MenuProfile3(label: 'Pusat Bantuan',icon: Icons.question_mark,),
             MenuProfile3(label: 'Kebijakan Privasi',icon: Icons.info,),
             MenuProfile3(label: 'Beri reting',icon: Icons.thumb_up,),
@@ -54,14 +68,20 @@ class ProfilePage extends StatelessWidget {
                     padding: EdgeInsets.all(10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [Container(
+                      children: [
+                        Container(
                             width: 50,
                             height: 50,
-                             child: Column(
-                               children: [
-                                 Image.asset('assets/icons/service.png'),
-                                 Text('Service', style: TextStyle(fontSize: 10,))
-                               ],
+                             child: InkWell(
+                              onTap: () {
+                                openWhatsApp("085649928040");
+                              },
+                               child: Column(
+                                 children: [
+                                   Image.asset('assets/icons/service.png'),
+                                   Text('Service', style: TextStyle(fontSize: 10,))
+                                 ],
+                               ),
                              ),
                            ),
                            Container(
@@ -154,16 +174,7 @@ class ProfileWidget extends StatelessWidget {
             ),
             SizedBox(height: 5),
             
-            ElevatedButton(
-              onPressed: () {
-                // Tambahkan logika untuk mengedit profil di sini
-              },
-              style: ElevatedButton.styleFrom(
-                primary: Colors.transparent,
-                onPrimary: Color(0xffBF00FF),
-              ),
-              child: Text('Edit'),
-            ),
+            
           ],
         ),
       ),
@@ -187,30 +198,35 @@ class MenuProfile extends StatelessWidget {
     );
   }
 }
+
 class MenuProfile3 extends StatelessWidget {
   final IconData? icon;
   final String label;
+  final VoidCallback? onTap; // VoidCallback untuk menangani ketika item ditekan.
 
-  MenuProfile3({this.icon, required this.label});
+  MenuProfile3({this.icon, required this.label, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 400,
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.white, 
-        border: Border.all(
-          width: 1,
-        )
-      ),
-      child: Row(
-        children: [
-          SizedBox(width: 10,),
-          Icon(icon),
-          SizedBox(width: 20,),
-          Text(label),
-        ],
+    return GestureDetector(
+      onTap: onTap, // Tambahkan fungsi onTap ke GestureDetector.
+      child: Container(
+        width: 400,
+        height: 50,
+        decoration: BoxDecoration(
+          color: Colors.white, 
+          border: Border.all(
+            width: 1,
+          )
+        ),
+        child: Row(
+          children: [
+            SizedBox(width: 10,),
+            Icon(icon),
+            SizedBox(width: 20,),
+            Text(label),
+          ],
+        ),
       ),
     );
   }

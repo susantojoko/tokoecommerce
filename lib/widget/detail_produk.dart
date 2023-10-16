@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:status_alert/status_alert.dart';
+import 'package:tokoecommerce/Screens/cart_page.dart';
+import 'package:tokoecommerce/Screens/chat_page.dart';
 import 'paymen.dart';
 // import '../fucntion/fucntion.dart';
 import '../data/data.dart';
@@ -33,6 +36,18 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   bool _favorite = false;
 
   String selectedSize = 'S';
+
+  void showStatusAlert(BuildContext context) {
+    StatusAlert.show(
+      context,
+      duration: Duration(seconds: 2),
+      title: 'Success',
+      backgroundColor: Colors.white,
+      subtitle: 'Barang berhasil ditambah di favorite',
+      configuration: IconConfiguration(icon: Icons.done_outline_outlined, color: Colors.green),
+      maxWidth: 260,
+    );
+  }
 
   // ALERT
   void _showSizeSelectionDialog() {
@@ -107,7 +122,20 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text(widget.jenis)),
+        title: Container(
+          margin: EdgeInsets.only(left: 10, right: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(widget.jenis),
+              InkWell(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> CartPage()));
+                },
+                child: Icon(Icons.shopping_cart))
+            ],
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -115,6 +143,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              
               Container(
                 width: double.infinity,
                 height: 150,
@@ -169,33 +198,41 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   Positioned(
                     top: 25,
                     left: 250,
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _favorite = !_favorite;
-                        });
-                      },
-                      child: Container(
-                        child: _favorite
-                            ? InkWell(
-                              onTap: () {
-                                FavoriteItem newItem = FavoriteItem(
-                          widget.imageUrl, widget.jenis, widget.rating, widget.price);
-                      favoriteItems.add(newItem);
-                              },
-                              child: Icon(
-                                  Icons.favorite,
-                                  size: 40,
-                                  color: Colors.red,
-                                ),
-                            )
-                            : Icon(
-                                Icons.favorite_outline,
-                                size: 40,
-                                color: Colors.red,
-                              ),
-                      ),
-                    ),
+                   child: GestureDetector(
+  onTap: () {
+    setState(() {
+      _favorite = !_favorite;
+    });
+    if (_favorite) {
+      // Ketika pengguna menambahkan item ke favorit
+      FavoriteItem newItem = FavoriteItem(
+        widget.imageUrl, widget.jenis, widget.rating, widget.price, widget.reviewCount);
+      favoriteItems.add(newItem);
+      showStatusAlert(context);
+    } else {
+      // Ketika pengguna menghapus item dari favorit
+      // Anda dapat menentukan bagaimana item dihapus dari favoriteItems di sini
+      // Misalnya, jika Anda ingin menghapus item berdasarkan kriteria tertentu.
+      favoriteItems.removeWhere((item) {
+        return item.jenis == widget.jenis; // Gantilah dengan kriteria yang sesuai
+      });
+    }
+  },
+  child: Container(
+    child: _favorite
+        ? Icon(
+            Icons.favorite,
+            size: 40,
+            color: Colors.red,
+          )
+        : Icon(
+            Icons.favorite_outline,
+            size: 40,
+            color: Colors.red,
+          ),
+  ),
+),
+
                   ),
                   Positioned(
                       top: 10,
@@ -384,7 +421,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      // Tambahkan logika untuk chat di sini
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(productName: widget.jenis,)));
                     },
                     icon: Icon(
                       Icons.chat,
@@ -434,13 +471,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Tambahkan logika untuk menampilkan keranjang belanja di sini
-          _showCartDialog();
-        },
-        child: Icon(Icons.shopping_cart),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     // Tambahkan logika untuk menampilkan keranjang belanja di sini
+      //     _showCartDialog();
+      //   },
+      //   child: Icon(Icons.shopping_cart),
+      // ),
     );
   }
 

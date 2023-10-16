@@ -80,7 +80,7 @@ class FavoriteItem {
   String jenis;
   double rating;
   double price;
-
-  FavoriteItem(this.imageUrl, this.jenis, this.rating, this.price,);
+  int reviewCount;
+  FavoriteItem(this.imageUrl, this.jenis, this.rating, this.price, this.reviewCount);
 }
 List<FavoriteItem> favoriteItems = [];

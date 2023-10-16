@@ -38,6 +38,8 @@ dependencies:
   page_view_indicators: ^2.0.0
   get: ^4.6.6
   dots_indicator: ^3.0.0
+  status_alert: ^1.0.1
+  url_launcher: ^6.1.14
 
 dev_dependencies:
   flutter_test:

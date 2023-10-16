@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tokoecommerce/Screens/favorite.dart';
 import 'package:tokoecommerce/Screens/homepage.dart';
-import 'package:tokoecommerce/Screens/notification.dart';
+import 'package:tokoecommerce/Screens/notifications_page.dart';
 import 'package:tokoecommerce/Screens/profile_page.dart';
 
 

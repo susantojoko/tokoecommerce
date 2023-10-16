@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tokoecommerce/Screens/cart_page.dart';
 import 'package:tokoecommerce/widget/detail_kategori.dart';
 import 'package:tokoecommerce/widget/detail_produk.dart';
-import 'package:tokoecommerce/Screens/kategori.dart';
+import 'package:tokoecommerce/Screens/category_page.dart';
 import '../data/data.dart';
 
 class HomePage extends StatefulWidget {
@@ -40,41 +40,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final ScreenSize = MediaQuery.of(context).size;
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor:Colors.white,
-      //   automaticallyImplyLeading: false,
-      //    title: Row(
-      //             children: [
-      //               Container(
-      //                 width: 150,
-      //                 height: 50,
-      //                 child: TextField(
-      //                   decoration: InputDecoration(
-      //                     hintText: 'Cari produk', // Placeholder dalam TextField
-      //                     prefixIcon: Icon(Icons.search), // Ikona pencarian
-      //                     border: OutlineInputBorder(
-      //                       borderRadius: BorderRadius.circular(20),
-      //                     ),
-      //                     filled: true,
-      //                     fillColor: Colors.white,
-      //                      // Border luar TextField
-      //                   ),
-      //                 ),
-      //               ),
-      //               Container(
-      //                 height: 30,
-      //                 width: 30,
-      //                 decoration: BoxDecoration(
-      //                   color: Colors.white,
-      //                   borderRadius: BorderRadius.circular(8),
-      //                 ),
-      //                 child: Icon(Icons.shopping_cart)),
-      //               SizedBox(
-      //                 width: 20,
-      //               ) // Ikona keranjang
-      //             ],
-      //           ),
-      // ),
+      
       body: SingleChildScrollView(
         child: Container(
           color: Color(0xffBF00FF),
