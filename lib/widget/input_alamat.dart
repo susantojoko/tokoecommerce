@@ -81,7 +81,7 @@ class _AddressFormState extends State<AddressForm> {
                   String zipCode = _zipCodeController.text;
                   String street = _streetController.text;
       
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentPage(),));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentPage(imageUrl: '',quantity: 1,jenis: '',price: 1, selectedSize: '',),));
                   // Melakukan sesuatu dengan data alamat, seperti menyimpannya atau mengirimnya
                   // Contoh: mencetak alamat ke konsol
                   print('Nama: $name');

@@ -211,6 +211,40 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Text('Produk Populer'),
+        SizedBox(height: 10),
+        // Bungkus daftar produk populer dalam ListView horizontal
+        Container(
+          height: 150, // Sesuaikan tinggi sesuai kebutuhan Anda
+          child: ListView(
+            scrollDirection: Axis.horizontal, // Mengaktifkan pengguliran horizontal
+            children: pakaian.map((product) {
+              return buildProductItem(
+                product['imageUrl'],
+                product['jenis'],
+                product['warna'],
+                product['rating'],
+                product['stok'],
+                product['reviewCount'],
+                product['price'],
+                context,
+              );
+            }).toList(),
+          ),
+        ),
+                        ],
+                      ),
+                    )),
+                SizedBox(
+                  height: 3,
+                ),
+                Container(
+                    color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
                           Text('Produk'),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -280,42 +314,6 @@ class _HomePageState extends State<HomePage> {
                   ]
                     ),
           ),
-          // Align(
-          //   alignment: Alignment.bottomLeft,
-          //   child: Container(
-          //     height: 60,
-          //     width: 300,
-          //     margin: EdgeInsets.only(left: 20, right: 20, bottom: 15),
-          //     decoration: BoxDecoration(
-          //         color: Colors.blue.withOpacity(0.4),
-          //         borderRadius: BorderRadius.circular(30),
-          //         ),
-          //     child: Column(
-          //       children: [
-          //       SizedBox(
-          //         height: 5,
-          //       ),
-          //       Text('Baju Bagus'),
-          //       Row(
-          //         children: [
-          //           Wrap(
-          //                 children: List.generate(5, (index) {
-          //                   return Icon(
-          //                     Icons.star,
-          //                     color: Colors.yellow,
-          //                     size: 12,
-          //                   );
-          //                 }),
-          //               ),
-          //               SizedBox(width: 10,),
-          //               Text('|'),
-          //               Icon(Icons.thumb_up, color: Colors.white, size: 15,)
-          //         ],
-          //       ),
-          //       Text('Rp 50,000')             
-          //     ]),
-          //   ),
-          // ),
         ],
       ),
     );
@@ -364,6 +362,25 @@ class MenuCategory extends StatelessWidget {
 
 Widget buildProductRow(BuildContext context) {
   return Column(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: pakaian.map(
+      (product) {
+        return buildProductItem(
+          product['imageUrl'],
+          product['jenis'],
+          product['warna'],
+          product['rating'],
+          product['stok'],
+          product['reviewCount'],
+          product['price'],
+          context,
+        );
+      },
+    ).toList(),
+  );
+}
+Widget buildProductPopuler(BuildContext context) {
+  return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: pakaian.map(
       (product) {
@@ -456,14 +473,6 @@ Widget buildProductItem(
                   ),
                 ),
                 SizedBox(height: 2),
-                // Text(
-                //   warna,
-                //   style: TextStyle(
-                //     fontSize: 12,
-                //     color: Colors.black,
-                //   ),
-                // ),
-                // SizedBox(height: 2),
                 Row(
                   children: [
                     Wrap(
@@ -475,11 +484,6 @@ Widget buildProductItem(
                         );
                       }),
                     ),
-                    // Icon(
-                    //   Icons.star,
-                    //   size: 12,
-                    //   color: Colors.orange,
-                    // ),
                     SizedBox(width: 3),
                     Text(
                       '$rating | $reviewCount',

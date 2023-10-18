@@ -32,7 +32,7 @@ class ProductDetailPage extends StatefulWidget {
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
   // Menggunakan List<CartItem> untuk menyimpan item belanja
-
+  int quantity =1;
   bool _favorite = false;
 
   String selectedSize = 'S';
@@ -48,25 +48,62 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       maxWidth: 260,
     );
   }
+  void showStatusAlertcart(BuildContext context) {
+    StatusAlert.show(
+      context,
+      duration: Duration(seconds: 1),
+      title: 'Success',
+      backgroundColor: Colors.white,
+      subtitle: 'Barang berhasil ditambah di Keranjang',
+      configuration: IconConfiguration(icon: Icons.done_outline_outlined, color: Colors.green),
+      maxWidth: 260,
+    );
+  }
 
   // ALERT
   void _showSizeSelectionDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        
+
         return Padding(
           padding: const EdgeInsets.only(top: 400.0),
           child: AlertDialog(
-            title: Text('Pilih Ukuran'),
-            backgroundColor: Colors.amber,
+            // title: Text('Pilih Ukuran'),
+            backgroundColor: Colors.white,
             contentPadding: EdgeInsets.all(0), // Atur padding ke nol
             content: SingleChildScrollView(
               // Gunakan SingleChildScrollView
               child: Container(
+                margin: EdgeInsets.all(10),
                 height: 200, // Atur lebar sesuai kebutuhan
                 child: Column(
                   children: <Widget>[
-                    DropdownButton<String>(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(image: 
+                            AssetImage(widget.imageUrl))
+                          ),
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 5,),
+                            Text(widget.jenis),
+                            SizedBox(height: 5,),
+                            Text('${widget.price}'),
+                          ],
+                        ),
+                      SizedBox(width: 30,),
+                        DropdownButton<String>(
                       value: selectedSize,
                       onChanged: (String? newValue) {
                         if (newValue != null) {
@@ -74,6 +111,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             selectedSize = newValue;
                           });
                         }
+                    Navigator.of(context).pop(); // Tutup dialog
+                    _showSizeSelectionDialog(); // Tampilkan dialog lagi dengan ukuran yang baru
+                
                       },
                       items: <String>['S', 'M', 'L', 'XL']
                           .map<DropdownMenuItem<String>>((String value) {
@@ -83,17 +123,58 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         );
                       }).toList(),
                     ),
-                    SizedBox(height: 20),
+
+                      ],
+                    ),
+                    
+                    Row(
+                      children: [
+                        SizedBox(width: 30,),
+                        IconButton(
+                                icon: Icon(Icons.remove_circle_outline,color:Colors.red, size: 16,),
+                                onPressed: () {
+                                  setState(() {
+                                    if (quantity > 1) {
+                                      quantity--;
+                                      Navigator.of(context).pop(); // Tutup dialog
+                    _showSizeSelectionDialog(); // Tampilkan dialog lagi dengan ukuran yang baru
+
+                                    }
+                                  });
+                                },
+                              ),
+                              Text(quantity.toString(),style:TextStyle(fontSize: 16)),
+                          IconButton(
+                            icon: Icon(Icons.add_circle_outline,color:Colors.green,size: 16,),
+                            onPressed: () {
+                              setState(() {
+                                quantity++;
+                              });
+                              Navigator.of(context).pop(); // Tutup dialog
+                    _showSizeSelectionDialog(); // Tampilkan dialog lagi dengan ukuran yang baru
+
+                            },
+                          ),
+                      ],
+                    ),
                     SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
                         // Implementasi logika untuk menambahkan produk ke keranjang belanja
                         // atau melanjutkan ke halaman checkout.
-                        Navigator.of(context).pop();
+                        BeliItem newBeliItem = BeliItem(
+                          widget.imageUrl, widget.jenis, quantity, widget.price, selectedSize);
+                      beliItems.add(newBeliItem);
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => PaymentPage()));
+                                builder: (context) => PaymentPage(
+                                 imageUrl: widget.imageUrl, 
+                                 jenis:widget.jenis,
+                                 quantity:quantity, 
+                                 price: widget.price,
+                                 selectedSize: selectedSize
+                                )));
                       },
                       child: Text('Checkout'),
                     ),
@@ -118,6 +199,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -436,6 +518,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       CartItem newItem = CartItem(
                           widget.imageUrl, widget.jenis, 1, widget.price);
                       cartItems.add(newItem);
+                      showStatusAlertcart(context);
                     },
                     icon: Icon(
                       Icons.add_shopping_cart_rounded,
@@ -460,8 +543,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   child: MaterialButton(
                     onPressed: () {
                       _showSizeSelectionDialog();
-                      _showCartDialog();
-                      // Tambahkan logika untuk pembelian di sini
+                      
                     },
                     child: Text('Beli Sekarang'),
                   ),
@@ -482,34 +564,34 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   }
 
   // Metode untuk menampilkan dialog keranjang belanja
-  void _showCartDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Keranjang Belanja'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: cartItems.map((item) {
-              return ListTile(
-                title: Text(item.jenis),
-                subtitle: Text(
-                  'Quantity: ${item.quantity}, Price: \$${item.price.toStringAsFixed(2)}',
-                ),
-              );
-            }).toList(),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Tutup'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+//   void _showCartDialog() {
+//     showDialog(
+//       context: context,
+//       builder: (BuildContext context) {
+//         return AlertDialog(
+//           title: Text('Keranjang Belanja'),
+//           content: Column(
+//             mainAxisSize: MainAxisSize.min,
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: cartItems.map((item) {
+//               return ListTile(
+//                 title: Text(item.jenis),
+//                 subtitle: Text(
+//                   'Quantity: ${item.quantity}, Price: \$${item.price.toStringAsFixed(2)}',
+//                 ),
+//               );
+//             }).toList(),
+//           ),
+//           actions: <Widget>[
+//             TextButton(
+//               onPressed: () {
+//                 Navigator.of(context).pop();
+//               },
+//               child: Text('Tutup'),
+//             ),
+//           ],
+//         );
+//       },
+//     );
+//   }
 }

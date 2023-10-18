@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:tokoecommerce/authentication/login.dart';
 
@@ -14,6 +16,8 @@ class ForgotPassword extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Text('Forgot Password', style: TextStyle(fontSize: 24,),),
+              SizedBox(height: 80,),
               Container(
                 height: 200,
                 width: 200,

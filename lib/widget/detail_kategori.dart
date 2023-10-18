@@ -14,25 +14,23 @@ class _DetailCategoryState extends State<DetailCategory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(children: [
-        Text('Halaman Detail'),
-        SizedBox(
-          height: 30,
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Produk'),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                buildProductRow(context), // Pass BuildContext to this function
-                buildProductRow(context), // Pass BuildContext to this function
-              ],
-            )
-          ],
-        ),
-      ]),
+      body: SingleChildScrollView(
+        child: Column(children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Populer'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  buildProductRow(context), // Pass BuildContext to this function
+                  buildProductRow(context), // Pass BuildContext to this function
+                ],
+              )
+            ],
+          ),
+        ]),
+      ),
     );
   }
 

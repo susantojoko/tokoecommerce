@@ -37,60 +37,69 @@ class _CartPageState extends State<CartPage> {
           : ListView.builder(
               itemCount: newCartItems.length,
               itemBuilder: (BuildContext context, int index) {
-                return Column(
-                  children: [
-                    ListTile(
-                      contentPadding: EdgeInsets.all(8), // Padding untuk ListTile
-                      leading: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Checkbox(
-                            value: selectedItems[index],
-                            onChanged: (bool? value) {
-                              setState(() {
-                                selectedItems[index] = value!; // Perbarui status item yang dipilih
-                              });
-                            },
-                          ),
-                          CircleAvatar(
-                            backgroundImage: AssetImage(newCartItems[index].imageUrl),
-                          ),
-                        ],
+                return Container(
+                  decoration: BoxDecoration(
+                    color: Colors.lime[50],
+                    border: Border.all(
+                      width: 1,
+                      color: Colors.white
+                    )
+                  ),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        contentPadding: EdgeInsets.all(8), // Padding untuk ListTile
+                        leading: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Checkbox(
+                              value: selectedItems[index],
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  selectedItems[index] = value!; // Perbarui status item yang dipilih
+                                });
+                              },
+                            ),
+                            CircleAvatar(
+                              backgroundImage: AssetImage(newCartItems[index].imageUrl),
+                            ),
+                          ],
+                        ),
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(newCartItems[index].jenis),
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.remove_circle_outline,color:Colors.red, size: 14,),
+                                  onPressed: () {
+                                    setState(() {
+                                      if (newCartItems[index].quantity > 1) {
+                                        newCartItems[index].quantity--;
+                                      }
+                                    });
+                                  },
+                                ),
+                                Text(newCartItems[index].quantity.toString(),style:TextStyle(fontSize: 14)),
+                            IconButton(
+                              icon: Icon(Icons.add_circle_outline,color:Colors.green,size: 14,),
+                              onPressed: () {
+                                setState(() {
+                                  newCartItems[index].quantity++;
+                                });
+                              },
+                            ),
+                            Text('Rp${newCartItems[index].price.toStringAsFixed(2)}'), 
+                              ],
+                            ),
+                           
+                          ],
+                        ),
+                       
                       ),
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(newCartItems[index].jenis),
-                          Row(
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.remove_circle_outline,color:Colors.red, size: 14,),
-                                onPressed: () {
-                                  setState(() {
-                                    if (newCartItems[index].quantity > 1) {
-                                      newCartItems[index].quantity--;
-                                    }
-                                  });
-                                },
-                              ),
-                              Text(newCartItems[index].quantity.toString(),style:TextStyle(fontSize: 14)),
-                          IconButton(
-                            icon: Icon(Icons.add_circle_outline,color:Colors.green,size: 14,),
-                            onPressed: () {
-                              setState(() {
-                                newCartItems[index].quantity++;
-                              });
-                            },
-                          ),
-                          Text('Rp${newCartItems[index].price.toStringAsFixed(2)}'), 
-                            ],
-                          ),
-                         
-                        ],
-                      ),
-                     
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               },
             ),

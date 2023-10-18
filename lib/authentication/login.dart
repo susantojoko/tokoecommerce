@@ -31,14 +31,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Center(
           child: Container(
             decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/background6.jpg'),
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(
-                  Colors.grey.withOpacity(0.3),
-                  BlendMode.darken,
-                ),
-              ),
+              
             ),
             child: Center(
               child: Column(
@@ -56,8 +49,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Container(
                     height: screenSize.height >= 800
-                        ? 400
-                        : 380, // Sesuaikan dengan layar web
+                        ? 500
+                        : 420, // Sesuaikan dengan layar web
                     width: screenSize.width >= 600
                         ? 400
                         : 300, // Sesuaikan dengan layar web
@@ -92,7 +85,37 @@ class _LoginPageState extends State<LoginPage> {
                         SizedBox(height: 10.0),
                         _buildLoginButton(context),
                         SizedBox(height: 10,),
-                        _buildSignUpButton(context)
+                        _buildSignUpButton(context),
+                        SizedBox(height: 20,),
+        Container(
+          margin: EdgeInsets.only(left: 25),
+          height: 40,
+          width: 250,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(
+              width: 1,
+              color: Colors.lightGreen
+            )
+          ),
+          child: MaterialButton(onPressed: (){
+        
+          }, child:Row(
+            children: [
+              SizedBox(width: 10,),
+              Container(
+                width: 25,
+                height: 25,
+                decoration: BoxDecoration(
+                  image: DecorationImage(image: AssetImage('assets/images/icongoogle.png'),
+                  fit: BoxFit.cover)
+                ),
+              ),
+              SizedBox(width: 20,),
+              Text(' Login With Google'),
+            ],
+          )),
+        ),
                       ],
                     ),
                   ),
@@ -258,6 +281,7 @@ class _LoginPageState extends State<LoginPage> {
           },
           child: Text("Sign Up"),
         ),
+        
         ],
         ),
       ),

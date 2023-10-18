@@ -75,6 +75,17 @@ class CartItem {
 }
 List<CartItem> cartItems = [];
 
+class BeliItem {
+  String imageUrl;
+  String jenis;
+  int quantity;
+  double price;
+  String selectedSize;
+
+  BeliItem(this.imageUrl, this.jenis, this.quantity, this.price, this.selectedSize,);
+}
+List<BeliItem> beliItems = [];
+ 
 class FavoriteItem {
   String imageUrl;
   String jenis;
