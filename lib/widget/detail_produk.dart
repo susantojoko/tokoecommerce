@@ -51,7 +51,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   void showStatusAlertcart(BuildContext context) {
     StatusAlert.show(
       context,
-      duration: Duration(seconds: 1),
+      duration: Duration(milliseconds:100 ),
       title: 'Success',
       backgroundColor: Colors.white,
       subtitle: 'Barang berhasil ditambah di Keranjang',
@@ -160,8 +160,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
-                        // Implementasi logika untuk menambahkan produk ke keranjang belanja
-                        // atau melanjutkan ke halaman checkout.
                         BeliItem newBeliItem = BeliItem(
                           widget.imageUrl, widget.jenis, quantity, widget.price, selectedSize);
                       beliItems.add(newBeliItem);
@@ -173,7 +171,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                  jenis:widget.jenis,
                                  quantity:quantity, 
                                  price: widget.price,
-                                 selectedSize: selectedSize
+                                 selectedSize: selectedSize,
+                                 isFromDirectBuy: false
                                 )));
                       },
                       child: Text('Checkout'),
@@ -501,15 +500,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(productName: widget.jenis,)));
-                    },
-                    icon: Icon(
-                      Icons.chat,
-                      color: Colors.blue,
-                    ),
-                  ),
+                  
                   SizedBox(
                     width: 20,
                   ),
@@ -518,6 +509,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       CartItem newItem = CartItem(
                           widget.imageUrl, widget.jenis, 1, widget.price);
                       cartItems.add(newItem);
+                      
                       showStatusAlertcart(context);
                     },
                     icon: Icon(
@@ -553,45 +545,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     // Tambahkan logika untuk menampilkan keranjang belanja di sini
-      //     _showCartDialog();
-      //   },
-      //   child: Icon(Icons.shopping_cart),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(productName: widget.jenis)));
+        },
+        child: Icon(Icons.chat_bubble),
+      ),
     );
   }
 
-  // Metode untuk menampilkan dialog keranjang belanja
-//   void _showCartDialog() {
-//     showDialog(
-//       context: context,
-//       builder: (BuildContext context) {
-//         return AlertDialog(
-//           title: Text('Keranjang Belanja'),
-//           content: Column(
-//             mainAxisSize: MainAxisSize.min,
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: cartItems.map((item) {
-//               return ListTile(
-//                 title: Text(item.jenis),
-//                 subtitle: Text(
-//                   'Quantity: ${item.quantity}, Price: \$${item.price.toStringAsFixed(2)}',
-//                 ),
-//               );
-//             }).toList(),
-//           ),
-//           actions: <Widget>[
-//             TextButton(
-//               onPressed: () {
-//                 Navigator.of(context).pop();
-//               },
-//               child: Text('Tutup'),
-//             ),
-//           ],
-//         );
-//       },
-//     );
-//   }
 }

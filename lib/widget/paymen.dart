@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tokoecommerce/data/data.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 class PaymentPage extends StatefulWidget {
   final String imageUrl;
@@ -7,6 +8,8 @@ class PaymentPage extends StatefulWidget {
   final int quantity;
   final double price;
   final String selectedSize;
+  final bool isFromDirectBuy;
+
 
 
   PaymentPage({
@@ -15,6 +18,7 @@ class PaymentPage extends StatefulWidget {
     required this.quantity,
     required this.price, 
     required this.selectedSize,
+    this.isFromDirectBuy= true
   });
 
   @override
@@ -26,6 +30,7 @@ class _PaymentPageState extends State<PaymentPage> {
   String selectedPaymentMethod = ' '; // Metode pembayaran default
   String selectedPaymentMethodWallet = ' '; // Metode pembayaran default
   
+  final List<CartItem> newCartItems = List<CartItem>.from(cartItems);
 
 
   @override
@@ -33,6 +38,11 @@ class _PaymentPageState extends State<PaymentPage> {
     double subtotal = 0.0;
 
     for (var item in newBeliItems) {
+      subtotal += item.quantity * item.price;
+    }
+    double subtotal2 = 0.0;
+
+    for (var item in newCartItems) {
       subtotal += item.quantity * item.price;
     }
 
@@ -84,54 +94,73 @@ class _PaymentPageState extends State<PaymentPage> {
             SizedBox(height: 32),
             Text('Produk'),
             Container(
-              width: MediaQuery.of(context).size.width-30,
-              height: 100,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border(
-                  bottom: BorderSide(
-                    width: 1,
-                  ),
+  width: MediaQuery.of(context).size.width - 30,
+  height: 300,
+  decoration: BoxDecoration(
+    color: Colors.white,
+    border: Border(
+      bottom: BorderSide(
+        width: 1,
+      ),
+    ),
+  ),
+  child: ListView.builder(
+    itemCount: widget.isFromDirectBuy ? newCartItems.length : newBeliItems.length,
+    itemBuilder: (BuildContext context, int index) {
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.lime[50],
+          border: Border.all(
+            width: 1,
+            color: Colors.white,
+          ),
+        ),
+        child: Card(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset(
+                widget.isFromDirectBuy
+                    ? newCartItems[index].imageUrl
+                    : widget.imageUrl,
+                fit: BoxFit.contain,
+                width: 100,
+                height: 100,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 8.0,
+                  right: 50,
+                  left: 8,
+                  top: 8,
+                ),
+                child: Column(
+                  children: [
+                    Text(widget.isFromDirectBuy
+                        ? newCartItems[index].jenis
+                        : widget.jenis),
+                    SizedBox(height: 10),
+                    Text('jumlah ${
+                      widget.isFromDirectBuy
+                          ? newCartItems[index].quantity.toString()
+                          : widget.quantity.toString()
+                    }'),
+                  ],
                 ),
               ),
-              child: ListView.builder(
-                itemCount: newBeliItems.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      SizedBox(height: 5,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(width: 5),
-                          Container(
-                            width: 80,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage(widget.imageUrl),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 10,),
-                          Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,  
-                          children: [
-                          Text(widget.jenis),
-                          SizedBox(height: 5,),
-                          Text('Jumlah ${widget.quantity}'),
-                          SizedBox(height: 5,),
-                          Text('ukuran ${widget.selectedSize} '),
-                          ],),
-                          SizedBox(width: 70,),
-                          Text('Rp ${widget.price.toStringAsFixed(2)}'),
-                        ],
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
+              Text(widget.isFromDirectBuy
+                  ? newCartItems[index].price.toString()
+                  : widget.price.toString()),
+              Text(subtotal2.toString())
+            ],
+          ),
+        ),
+      );
+    },
+  ),
+),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -213,21 +242,6 @@ class _PaymentPageState extends State<PaymentPage> {
             ),
 
             SizedBox(height: 16),
-            ListTile(
-              leading: Icon(Icons.credit_card),
-              title: Text('Credit Card'),
-              onTap: () {
-                // Tambahkan logika untuk pemilihan kartu kredit
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.account_balance_wallet),
-              title: Text('e-Wallet'),
-              onTap: () {
-                // Tambahkan logika untuk pemilihan dompet elektronik
-              },
-            ),
-            SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -251,7 +265,16 @@ class _PaymentPageState extends State<PaymentPage> {
             SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {
-                // Tambahkan logika untuk melakukan pembayaran
+                 AwesomeDialog(
+      context: context,
+      dialogType: DialogType.SUCCES, // Jenis alert yang akan ditampilkan (SUCCES untuk pesan sukses)
+      animType: AnimType.BOTTOMSLIDE, // Animasi masuknya alert
+      title: 'Berhasil Dibeli',
+      desc: 'Produk telah berhasil dibeli.',
+      btnOkOnPress: () {
+        Navigator.of(context).pop(); // Tutup alert saat tombol OK ditekan
+      },
+    )..show();
               },
               child: Text('Pay Now'),
             ),

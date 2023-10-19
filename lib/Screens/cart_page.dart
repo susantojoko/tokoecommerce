@@ -10,13 +10,16 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   final List<CartItem> newCartItems = List<CartItem>.from(cartItems);
   List<bool> selectedItems = List.generate(cartItems.length, (index) => false);
-
+  
   @override
   Widget build(BuildContext context) {
     double subtotal = 0.0;
     for (var item in newCartItems) {
       subtotal += item.quantity * item.price;
     }
+    for (int i = 0; i < newCartItems.length; i++) {
+  cartItems[i] = newCartItems[i];
+}
 
     return Scaffold(
       appBar: AppBar(
@@ -45,60 +48,62 @@ class _CartPageState extends State<CartPage> {
                       color: Colors.white
                     )
                   ),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        contentPadding: EdgeInsets.all(8), // Padding untuk ListTile
-                        leading: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Checkbox(
-                              value: selectedItems[index],
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  selectedItems[index] = value!; // Perbarui status item yang dipilih
-                                });
-                              },
-                            ),
-                            CircleAvatar(
-                              backgroundImage: AssetImage(newCartItems[index].imageUrl),
-                            ),
-                          ],
+                  child: Card(
+                    child: Column(
+                      children: [
+                        ListTile(
+                          contentPadding: EdgeInsets.all(8), // Padding untuk ListTile
+                          leading: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Checkbox(
+                                value: selectedItems[index],
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    selectedItems[index] = value!; // Perbarui status item yang dipilih
+                                  });
+                                },
+                              ),
+                              CircleAvatar(
+                                backgroundImage: AssetImage(newCartItems[index].imageUrl),
+                              ),
+                            ],
+                          ),
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(newCartItems[index].jenis),
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.remove_circle_outline,color:Colors.red, size: 14,),
+                                    onPressed: () {
+                                      setState(() {
+                                        if (newCartItems[index].quantity > 1) {
+                                          newCartItems[index].quantity--;
+                                        }
+                                      });
+                                    },
+                                  ),
+                                  Text(newCartItems[index].quantity.toString(),style:TextStyle(fontSize: 14)),
+                              IconButton(
+                                icon: Icon(Icons.add_circle_outline,color:Colors.green,size: 14,),
+                                onPressed: () {
+                                  setState(() {
+                                    newCartItems[index].quantity++;
+                                  });
+                                },
+                              ),
+                              Text('Rp${newCartItems[index].price.toStringAsFixed(2)}'), 
+                                ],
+                              ),
+                             
+                            ],
+                          ),
+                         
                         ),
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(newCartItems[index].jenis),
-                            Row(
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.remove_circle_outline,color:Colors.red, size: 14,),
-                                  onPressed: () {
-                                    setState(() {
-                                      if (newCartItems[index].quantity > 1) {
-                                        newCartItems[index].quantity--;
-                                      }
-                                    });
-                                  },
-                                ),
-                                Text(newCartItems[index].quantity.toString(),style:TextStyle(fontSize: 14)),
-                            IconButton(
-                              icon: Icon(Icons.add_circle_outline,color:Colors.green,size: 14,),
-                              onPressed: () {
-                                setState(() {
-                                  newCartItems[index].quantity++;
-                                });
-                              },
-                            ),
-                            Text('Rp${newCartItems[index].price.toStringAsFixed(2)}'), 
-                              ],
-                            ),
-                           
-                          ],
-                        ),
-                       
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },
@@ -129,13 +134,13 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
-  // Fungsi untuk menghapus item yang dipilih
-  void _deleteSelectedItems() {
-    for (int i = selectedItems.length - 1; i >= 0; i--) {
-      if (selectedItems[i]) {
-        selectedItems.removeAt(i);
-        newCartItems.removeAt(i);
-      }
+ void _deleteSelectedItems() {
+  for (int i = newCartItems.length - 1; i >= 0; i--) {
+    if (selectedItems[i]) {
+      selectedItems.removeAt(i); // Hapus tanda centang
+      newCartItems.removeAt(i); // Hapus item yang dipilih
+      
     }
   }
+}
 }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tokoecommerce/data/data.dart';
 import 'package:tokoecommerce/widget/paymen.dart';
 
 class AddressForm extends StatefulWidget {
+  //cart
+   final List<CartItem> newCartItems = List<CartItem>.from(cartItems);
   @override
   _AddressFormState createState() => _AddressFormState();
 }

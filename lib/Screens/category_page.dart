@@ -70,44 +70,46 @@ class _buildDataCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Column(
-          children: [
-            Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(gambar), fit: BoxFit.cover))),
-            Text(label),
-          ],
-        ),
-        SizedBox(width: 10,),
-        Column(
-          children: [
-            Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(gambar), fit: BoxFit.cover))),
-            Text(label),
-          ],
-        ),
-        SizedBox(width: 10,),
-        Column(
-          children: [
-            Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(gambar), fit: BoxFit.cover))),
-            Text(label),
-          ],
-        ),
-      ],
+    return Card(
+      child: Row(
+        children: [
+          Column(
+            children: [
+              Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(gambar), fit: BoxFit.cover))),
+              Text(label),
+            ],
+          ),
+          SizedBox(width: 10,),
+          Column(
+            children: [
+              Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(gambar), fit: BoxFit.cover))),
+              Text(label),
+            ],
+          ),
+          SizedBox(width: 10,),
+          Column(
+            children: [
+              Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(gambar), fit: BoxFit.cover))),
+              Text(label),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

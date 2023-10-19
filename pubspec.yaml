@@ -40,6 +40,8 @@ dependencies:
   dots_indicator: ^3.0.0
   status_alert: ^1.0.1
   url_launcher: ^6.1.14
+  awesome_dialog: ^3.1.0
+  http: ^1.1.0
 
 dev_dependencies:
   flutter_test:
